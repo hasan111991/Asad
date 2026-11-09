@@ -66,7 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-lg sm:text-xl font-bold tracking-tight text-white group-hover:text-[#C9A227] transition-colors">
-                  {isUrdu ? 'چوہدری اسد حنیف جٹ' : 'Chaudhry Asad Hanif Jutt'}
+                  {isUrdu ? 'چوہدری اسد حنیف جٹ' : 'Ch Asad Hanif'}
                 </span>
                 <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] bg-[#087A43] border border-[#C9A227]/40 text-[#C9A227] font-semibold">
                   MPA
