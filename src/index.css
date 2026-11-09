@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-deep-green: #087A43;
+    --color-dark-green: #123B28;
+    --color-gold: #C9A227;
+    --color-light-bg: #F7F9F7;
+  }
+
+  body {
+    background-color: #F7F9F7;
+    color: #1a202c;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+  }
+
+  [dir="rtl"] {
+    font-family: 'Noto Nastaliq Urdu', 'DM Sans', serif;
+  }
+
+  [dir="rtl"] .font-heading {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    line-height: 2;
+  }
+}
+
+.font-editorial {
+  font-family: 'Cinzel', 'DM Sans', serif;
+}
+
+.font-urdu {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  line-height: 1.9;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(8, 122, 67, 0.12);
+}
+
+.glass-panel-dark {
+  background: rgba(18, 59, 40, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.green-gradient-bg {
+  background: linear-gradient(135deg, #123B28 0%, #087A43 70%, #05542e 100%);
+}
+
+.hero-pattern {
+  background-color: #123B28;
+  background-image: radial-gradient(rgba(201, 162, 39, 0.15) 1px, transparent 0);
+  background-size: 24px 24px;
+}

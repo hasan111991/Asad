@@ -1,0 +1,278 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "Profile",
+      "description": "Public profile, biography, and official information of Chaudhry Asad Hanif Jutt",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string", "maxLength": 100 },
+        "fullNameUrdu": { "type": "string", "maxLength": 100 },
+        "title": { "type": "string", "maxLength": 100 },
+        "titleUrdu": { "type": "string", "maxLength": 100 },
+        "party": { "type": "string", "maxLength": 100 },
+        "constituency": { "type": "string", "maxLength": 100 },
+        "bio": { "type": "string", "maxLength": 5000 },
+        "bioUrdu": { "type": "string", "maxLength": 5000 },
+        "politicalJourney": { "type": "string", "maxLength": 3000 },
+        "education": { "type": "string", "maxLength": 1000 },
+        "officeAddress": { "type": "string", "maxLength": 300 },
+        "officeHours": { "type": "string", "maxLength": 150 },
+        "officialEmail": { "type": "string", "maxLength": 100 },
+        "officialPhone": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fullName", "party", "constituency"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Constituency PP-203 infrastructure and social development projects",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200 },
+        "titleUrdu": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "enum": ["Roads and Infrastructure", "Education", "Healthcare", "Clean Drinking Water", "Electricity", "Sanitation", "Public Facilities"] },
+        "location": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 3000 },
+        "descriptionUrdu": { "type": "string", "maxLength": 3000 },
+        "status": { "type": "string", "enum": ["Proposed", "Approved", "In Progress", "Completed"] },
+        "department": { "type": "string", "maxLength": 150 },
+        "budget": { "type": "string", "maxLength": 100 },
+        "startDate": { "type": "string", "maxLength": 50 },
+        "completionDate": { "type": "string", "maxLength": 50 },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "fundingType": { "type": "string", "enum": ["Government-Funded", "Department-Led", "MPA Initiative"] },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "location", "status", "department"]
+    },
+    "AssemblyActivity": {
+      "title": "AssemblyActivity",
+      "description": "Punjab Provincial Assembly debates, questions, bills, and committee proceedings",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 250 },
+        "titleUrdu": { "type": "string", "maxLength": 250 },
+        "type": { "type": "string", "enum": ["Question Raised", "Bill & Resolution", "Committee Participation", "Parliamentary Activity", "Official Announcement"] },
+        "session": { "type": "string", "maxLength": 100 },
+        "date": { "type": "string", "maxLength": 50 },
+        "summary": { "type": "string", "maxLength": 3000 },
+        "summaryUrdu": { "type": "string", "maxLength": 3000 },
+        "documentUrl": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "type", "date", "summary"]
+    },
+    "News": {
+      "title": "News",
+      "description": "Press releases, constituency visits, statements, and community news",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 250 },
+        "titleUrdu": { "type": "string", "maxLength": 250 },
+        "category": { "type": "string", "enum": ["Latest Updates", "Press Releases", "Official Statements", "Assembly News", "Constituency Visits", "Public Meetings"] },
+        "date": { "type": "string", "maxLength": 50 },
+        "content": { "type": "string", "maxLength": 10000 },
+        "contentUrdu": { "type": "string", "maxLength": 10000 },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "isFeatured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "date", "content"]
+    },
+    "GalleryItem": {
+      "title": "GalleryItem",
+      "description": "Photos and videos from constituency visits and assembly sessions",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 150 },
+        "titleUrdu": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "maxLength": 100 },
+        "mediaType": { "type": "string", "enum": ["photo", "video"] },
+        "mediaUrl": { "type": "string", "maxLength": 1000 },
+        "date": { "type": "string", "maxLength": 50 },
+        "caption": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "mediaType", "mediaUrl"]
+    },
+    "Complaint": {
+      "title": "Complaint",
+      "description": "Public complaints and service requests submitted by citizens of PP-203 Chichawatni",
+      "type": "object",
+      "properties": {
+        "trackingId": { "type": "string", "maxLength": 50, "pattern": "^[A-Z0-9\\-]+$" },
+        "citizenName": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "district": { "type": "string", "maxLength": 60 },
+        "tehsil": { "type": "string", "maxLength": 60 },
+        "area": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "enum": ["Roads & Infrastructure", "Water Supply", "Electricity", "Education Concerns", "Healthcare Facilities", "Sanitation & Sewerage", "Other Public Service"] },
+        "description": { "type": "string", "maxLength": 2500 },
+        "status": { "type": "string", "enum": ["Received", "Under Review", "Referred to Department", "Resolved", "Closed"] },
+        "departmentReferred": { "type": "string", "maxLength": 150 },
+        "adminRemarks": { "type": "string", "maxLength": 1500 },
+        "smsNotified": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["trackingId", "citizenName", "phone", "district", "tehsil", "area", "category", "description", "status"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "General inquiries and appointment requests from citizens and media",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "subject": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 3000 },
+        "status": { "type": "string", "enum": ["New", "Read", "Replied", "Archived"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "phone", "subject", "message"]
+    },
+    "PublicNotice": {
+      "title": "PublicNotice",
+      "description": "Downloadable public announcements, development updates, and gazetted notifications",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 250 },
+        "titleUrdu": { "type": "string", "maxLength": 250 },
+        "category": { "type": "string", "enum": ["Public Announcements", "Development Updates", "Office Notifications", "Public Meetings", "Important Documents"] },
+        "publishDate": { "type": "string", "maxLength": 50 },
+        "description": { "type": "string", "maxLength": 3000 },
+        "descriptionUrdu": { "type": "string", "maxLength": 3000 },
+        "fileUrl": { "type": "string", "maxLength": 1000 },
+        "fileName": { "type": "string", "maxLength": 150 },
+        "fileSize": { "type": "string", "maxLength": 50 },
+        "fileType": { "type": "string", "maxLength": 50 },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "publishDate", "fileUrl"]
+    },
+    "SMSLog": {
+      "title": "SMSLog",
+      "description": "Audit record of SMS notifications triggered for complaint status transitions",
+      "type": "object",
+      "properties": {
+        "trackingId": { "type": "string", "maxLength": 50 },
+        "recipientPhone": { "type": "string", "maxLength": 30 },
+        "message": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["Delivered", "Sent", "Failed", "Simulated"] },
+        "provider": { "type": "string", "maxLength": 50 },
+        "error": { "type": "string", "maxLength": 300 },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["trackingId", "recipientPhone", "message", "status"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Administrative actions audit log for accountability",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string", "maxLength": 150 },
+        "adminEmail": { "type": "string", "maxLength": 150 },
+        "targetCollection": { "type": "string", "maxLength": 100 },
+        "targetId": { "type": "string", "maxLength": 100 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["action", "adminEmail", "timestamp"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global website configuration, emergency numbers, WhatsApp, SMS gateway, and Analytics settings",
+      "type": "object",
+      "properties": {
+        "announcement": { "type": "string", "maxLength": 500 },
+        "announcementUrdu": { "type": "string", "maxLength": 500 },
+        "announcementActive": { "type": "boolean" },
+        "helplinePhone": { "type": "string", "maxLength": 50 },
+        "officeLocation": { "type": "string", "maxLength": 300 },
+        "facebookUrl": { "type": "string", "maxLength": 500 },
+        "twitterUrl": { "type": "string", "maxLength": 500 },
+        "youtubeUrl": { "type": "string", "maxLength": 500 },
+        "whatsappNumber": { "type": "string", "maxLength": 50 },
+        "whatsappEnabled": { "type": "boolean" },
+        "whatsappDefaultMessage": { "type": "string", "maxLength": 500 },
+        "smsEnabled": { "type": "boolean" },
+        "smsProvider": { "type": "string", "maxLength": 50 },
+        "smsSenderId": { "type": "string", "maxLength": 50 },
+        "gaMeasurementId": { "type": "string", "maxLength": 50 },
+        "gaEnabled": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Authorized staff administrative accounts and RBAC roles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 150 },
+        "displayName": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["Super Admin", "Office Manager", "Project Manager", "Media Manager", "Data Entry Operator"] },
+        "status": { "type": "string", "enum": ["Active", "Suspended"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string", "maxLength": 150 },
+        "lastLogin": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "displayName", "role", "status"]
+    }
+  },
+  "firestore": {
+    "/admins/{userId}": {
+      "schema": "AdminUser",
+      "description": "Authorized secretariat admin accounts with RBAC roles"
+    },
+    "/profile/{profileId}": {
+      "schema": "Profile",
+      "description": "Leader public bio and verified details"
+    },
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "PP-203 constituency development projects"
+    },
+    "/assembly_activities/{activityId}": {
+      "schema": "AssemblyActivity",
+      "description": "Punjab Provincial Assembly debates, questions, and bills"
+    },
+    "/news/{newsId}": {
+      "schema": "News",
+      "description": "News, press releases, and statements"
+    },
+    "/gallery/{itemId}": {
+      "schema": "GalleryItem",
+      "description": "Photo and video gallery"
+    },
+    "/complaints/{complaintId}": {
+      "schema": "Complaint",
+      "description": "Public service complaints submitted by citizens"
+    },
+    "/contact_messages/{messageId}": {
+      "schema": "ContactMessage",
+      "description": "Contact form submissions"
+    },
+    "/public_notices/{noticeId}": {
+      "schema": "PublicNotice",
+      "description": "Official public notices and gazetted documents"
+    },
+    "/sms_logs/{logId}": {
+      "schema": "SMSLog",
+      "description": "Log of SMS notifications sent to citizens"
+    },
+    "/audit_logs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Admin action audit log"
+    },
+    "/settings/{settingId}": {
+      "schema": "SiteSettings",
+      "description": "General portal settings and integration keys"
+    }
+  }
+}

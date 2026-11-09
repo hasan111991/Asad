@@ -1,0 +1,129 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "hasanaamir815@gmail.com" ||
+        (exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "Super Admin")
+      );
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "hasanaamir815@gmail.com" ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidComplaint(data) {
+      return data.keys().hasAll(['trackingId', 'citizenName', 'phone', 'district', 'tehsil', 'area', 'category', 'description', 'status'])
+        && data.trackingId is string && data.trackingId.size() <= 50
+        && data.citizenName is string && data.citizenName.size() <= 100
+        && data.phone is string && data.phone.size() <= 30
+        && data.district is string && data.district.size() <= 60
+        && data.tehsil is string && data.tehsil.size() <= 60
+        && data.area is string && data.area.size() <= 150
+        && data.category is string && data.category.size() <= 100
+        && data.description is string && data.description.size() <= 2500
+        && data.status in ['Received', 'Under Review', 'Referred to Department', 'Resolved', 'Closed'];
+    }
+
+    function isValidContactMessage(data) {
+      return data.keys().hasAll(['name', 'phone', 'subject', 'message'])
+        && data.name is string && data.name.size() <= 100
+        && data.phone is string && data.phone.size() <= 30
+        && data.subject is string && data.subject.size() <= 200
+        && data.message is string && data.message.size() <= 3000;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Authorized Admin Staff Accounts (RBAC)
+    match /admins/{userId} {
+      allow read: if isSignedIn() && (isAdmin() || request.auth.uid == userId);
+      allow write: if isSuperAdmin();
+    }
+
+    // Public Profile
+    match /profile/{profileId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Development Projects (PP-203)
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Assembly Activities
+    match /assembly_activities/{activityId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // News & Press Releases
+    match /news/{newsId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Gallery
+    match /gallery/{itemId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Public Notices & Gazetted Updates
+    match /public_notices/{noticeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Public Service Portal Complaints
+    match /complaints/{complaintId} {
+      allow create: if isValidComplaint(request.resource.data);
+      allow get: if true;
+      allow list: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    // Contact messages & Appointment Inquiries
+    match /contact_messages/{messageId} {
+      allow create: if isValidContactMessage(request.resource.data);
+      allow read, update, delete: if isAdmin();
+    }
+
+    // SMS Notifications Audit Log
+    match /sms_logs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Admin Audit Logs (Immutable after creation)
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // Site Settings (including WhatsApp, SMS, GA4 configs)
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
