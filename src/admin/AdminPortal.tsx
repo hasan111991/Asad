@@ -104,11 +104,22 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const { isAdmin, adminRole, isSuperAdmin, hasPermission, logout } = useAuth();
   const { isUrdu } = useLanguage();
 
-  // Internal path routing (syncs with browser history)
+  // Internal path routing (supports subdirectories like /repo-name/ and hash fallback)
   const getInitialPath = () => {
+    const hash = window.location.hash.toLowerCase();
+    if (hash.includes('/admin')) {
+      const hashSub = hash.substring(hash.indexOf('/admin'));
+      return hashSub === '/admin' ? '/admin/dashboard' : hashSub;
+    } else if (hash.startsWith('#admin')) {
+      const hashSub = '/' + hash.replace('#', '');
+      return hashSub === '/admin' ? '/admin/dashboard' : hashSub;
+    }
+
     const path = window.location.pathname;
-    if (path.startsWith('/admin')) {
-      return path === '/admin' ? '/admin/dashboard' : path;
+    const adminIndex = path.indexOf('/admin');
+    if (adminIndex !== -1) {
+      const sub = path.substring(adminIndex);
+      return sub === '/admin' ? '/admin/dashboard' : sub;
     }
     return '/admin/dashboard';
   };
@@ -121,19 +132,26 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   // Sync with browser URL
   const navigateTo = (path: string) => {
     setCurrentPath(path);
-    window.history.pushState({}, '', path);
+    const fullPath = window.location.pathname;
+    const adminIndex = fullPath.indexOf('/admin');
+    const repoBase = adminIndex !== -1 ? fullPath.substring(0, adminIndex) : '';
+    const targetUrl = `${repoBase}${path}`;
+    try {
+      window.history.pushState({}, '', targetUrl);
+    } catch (_) {}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
-    const handlePopState = () => {
-      const path = window.location.pathname;
-      if (path.startsWith('/admin')) {
-        setCurrentPath(path === '/admin' ? '/admin/dashboard' : path);
-      }
+    const handleUrlChange = () => {
+      setCurrentPath(getInitialPath());
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handleUrlChange);
+    window.addEventListener('hashchange', handleUrlChange);
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+      window.removeEventListener('hashchange', handleUrlChange);
+    };
   }, []);
 
   const showNotification = (msg: string) => {

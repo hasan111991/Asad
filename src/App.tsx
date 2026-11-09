@@ -62,20 +62,36 @@ import { AdminPortal } from './admin/AdminPortal';
 function AppContent() {
   const { isUrdu } = useLanguage();
 
-  // Route path tracker for URL separation (/ vs /admin/*)
-  const [routePath, setRoutePath] = useState<string>(() => window.location.pathname);
+  // Route path tracker for URL separation (/ vs /admin/*) with GitHub Pages subdirectory and hash support
+  const checkIsAdmin = () => {
+    const path = window.location.pathname.toLowerCase();
+    const hash = window.location.hash.toLowerCase();
+    return path.includes('/admin') || hash.includes('/admin') || hash.startsWith('#admin');
+  };
+
+  const [isAdminRoute, setIsAdminRoute] = useState<boolean>(checkIsAdmin);
 
   useEffect(() => {
-    const handlePopState = () => {
-      setRoutePath(window.location.pathname);
+    const handleLocationChange = () => {
+      setIsAdminRoute(checkIsAdmin());
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
   }, []);
 
   const navigateToHome = () => {
-    window.history.pushState({}, '', '/');
-    setRoutePath('/');
+    const path = window.location.pathname;
+    const adminIndex = path.indexOf('/admin');
+    const basePath = adminIndex !== -1 ? path.substring(0, adminIndex) || '/' : path;
+    try {
+      window.history.pushState({}, '', basePath);
+    } catch (_) {}
+    window.location.hash = '';
+    setIsAdminRoute(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -158,7 +174,7 @@ function AppContent() {
   // SEPARATE PRIVATE ADMIN PORTAL (/admin/*)
   // Completely isolated from the public website layout.
   // -------------------------------------------------------------
-  if (routePath.startsWith('/admin')) {
+  if (isAdminRoute) {
     return (
       <>
         <AdminPortal
