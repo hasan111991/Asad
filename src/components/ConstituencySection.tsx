@@ -125,8 +125,13 @@ export const ConstituencySection: React.FC<ConstituencySectionProps> = ({ projec
         {/* Overview Banner Card */}
         <div className="relative rounded-2xl overflow-hidden shadow-xl mb-12 border-2 border-emerald-900/10">
           <img
-            src="/src/assets/images/chichawatni_scene_1794225848060.jpg"
+            src="./assets/images/chichawatni_scene.jpg"
             alt="Chichawatni PP-203 Landscape"
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80';
+            }}
             className="w-full h-72 sm:h-96 object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#123B28] via-[#123B28]/70 to-transparent flex items-end p-6 sm:p-10">

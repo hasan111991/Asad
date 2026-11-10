@@ -109,8 +109,12 @@ export const Hero: React.FC<HeroProps> = ({ profile, projects, complaints, onNav
               
               <div className="relative rounded-2xl overflow-hidden bg-[#123B28] border-2 border-[#C9A227]/60 shadow-2xl">
                 <img
-                  src={profile.photoUrl}
-                  alt={profile.fullName}
+                  src={profile.photoUrl || './assets/images/chaudhry_asad_hanif_jutt.jpg'}
+                  alt={isUrdu ? profile.fullNameUrdu : profile.fullName}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = './assets/images/chaudhry_asad_hanif_jutt.jpg';
+                  }}
                   className="w-full h-auto object-cover object-top aspect-[3/4] hover:scale-102 transition duration-700"
                 />
 

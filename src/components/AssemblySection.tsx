@@ -70,8 +70,13 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({ activities }) 
         {/* Assembly Banner Graphic */}
         <div className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 mb-10">
           <img
-            src="/src/assets/images/punjab_assembly_1794225863446.jpg"
+            src="./assets/images/punjab_assembly.jpg"
             alt="Punjab Provincial Assembly Chamber"
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80';
+            }}
             className="w-full h-56 sm:h-72 object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#123B28]/95 via-[#123B28]/80 to-transparent flex items-center p-6 sm:p-10">

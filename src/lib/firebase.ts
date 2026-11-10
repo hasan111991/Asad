@@ -5,7 +5,22 @@ import {
   doc, 
   getDocFromServer 
 } from 'firebase/firestore';
-import firebaseConfig from '../../firebase-applet-config.json';
+import rawFirebaseConfig from '../../firebase-applet-config.json';
+
+const defaultFirebaseConfig = {
+  projectId: "primeval-objective-t8chg",
+  appId: "1:499568409181:web:ab776e3b1b901b22046bb4",
+  apiKey: "AIzaSyCfyQdUG3f2KYku6H5EZz44ke-tCMP8370",
+  authDomain: "primeval-objective-t8chg.firebaseapp.com",
+  firestoreDatabaseId: "ai-studio-chaudhryasadhani-bdc67768-220b-449b-8fc4-bb22028a39bc",
+  storageBucket: "primeval-objective-t8chg.firebasestorage.app",
+  messagingSenderId: "499568409181"
+};
+
+const firebaseConfig = {
+  ...defaultFirebaseConfig,
+  ...(typeof rawFirebaseConfig === 'object' && rawFirebaseConfig !== null ? rawFirebaseConfig : {})
+};
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
